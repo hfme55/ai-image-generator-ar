@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Image Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #111; color: white; text-align: center; padding: 30px; }
+    input, button { padding: 10px; border-radius: 5px; border: none; margin: 10px; }
+    input { width: 60%; }
+    button { background: #007bff; color: white; cursor: pointer; }
+    img { margin-top: 20px; border-radius: 10px; max-width: 80%; }
+    .ad { margin: 20px auto; width: 90%; background: #222; padding: 15px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <h1>🖼️ Free AI Image Generator</h1>
+  <p>Type anything and watch it turn into art!</p>
+  <input id="prompt" type="text" placeholder="Describe your image..." />
+  <button onclick="generateImage()">Generate Image</button>
+  <div id="output"></div>
+
+  <div class="ad">
+    <!-- هنا تضع كود إعلان Monetag أو PropellerAds -->
+    <p>🔥 Your Ad Here 🔥</p>
+  </div>
+
+  <script>
+    async function generateImage() {
+      const prompt = document.getElementById('prompt').value;
+      const output = document.getElementById('output');
+      output.innerHTML = "⏳ Generating image...";
+      
+      const response = await fetch("https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1", {
+        headers: {
+          "Authorization": "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",
+          "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify({ "inputs": prompt })
+      });
+      
+      const result = await response.blob();
+      const imageUrl = URL.createObjectURL(result);
+      output.innerHTML = `<img src="${imageUrl}" alt="Generated Image" />`;
+    }
+  </script>
+</body>
+</html>
